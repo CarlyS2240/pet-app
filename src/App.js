@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar';
 import { PetsHomePage } from './components/pages/PetsHomePage';
 import { ShoppingCartPage } from './components/pages/ShoppingCartPage';
 import { PetDetailsPage } from './components/PetDetailsPage';
+import { LoginPage } from './components/pages/LoginPage';
 
 
 function App() {
@@ -23,6 +24,9 @@ function App() {
         </Route>
         <Route path="/pet/:id">
           <PetDetailsPage></PetDetailsPage>
+        </Route>
+        <Route path="/login">
+          <LoginPage/>
         </Route>
       </Switch>
     </Router>
