@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
 
 import './styles.css'
 
@@ -9,13 +11,37 @@ export const LoginPage = () => {
 
     const {register, handleSubmit } = useForm();
 
-    const loginUser = (formVals) => {
-        console.log("Login Submitted", formVals)
-    }
+    const history = useHistory();
+
+    const loginUser = async(formVals) => {
 
 
-    const signUpUser = (formVals) => {
+        try{
+            console.log("Login Submitted", formVals)
+            const auth = getAuth();
+            console.log(auth);
+            const loginUser = await signInWithEmailAndPassword(auth, formVals.user, formVals.password);
+            history.push('/');
+            console.log("after login", auth);
+
+        }catch(error){
+                console.log("Error connecting to firebase", error)
+            
+            }
+        }
+
+
+    const signUpUser = async(formVals) => {
         console.log("Sign Up Submitted", formVals)
+        const auth = getAuth();
+
+        try{
+            const signUpUser = await createUserWithEmailAndPassword(auth, formVals.user, formVals.password);
+            console.log("New user was created", signUpUser);
+            history.push('/');
+        }catch (error){
+            console.log("Error from firebase", error)
+        }
     }
 
     return (
@@ -58,7 +84,7 @@ export const LoginPage = () => {
                         <input type ="submit" value="Sign Up"/>
                         <br/>
                         <p>Have an account already?</p>
-                        <button onClick={()=> setMode("Login")} >Login</button>
+                        <button onClick={()=> setMode("login")} >Login</button>
                     </form>
                 )
             }
